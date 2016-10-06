@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 
 [RequireComponent(typeof(Animator))]
@@ -24,13 +25,17 @@ public class PointController : MonoBehaviour {
     {
         this.number.text = number.ToString();
     }
+    public int GetNumber()
+    {
+        return Int32.Parse(this.number.text);
+    }
 
-    private void Apear()
+    public void Apear()
     {
         anim.SetBool("apear", true);
     }
 
-    private void Disapear()
+    public void Disapear()
     {
         anim.SetBool("apear", false);
     }
@@ -38,6 +43,15 @@ public class PointController : MonoBehaviour {
     public void GetPressed()
     {
         //Check if good or bad press
+        if (GameManager.Instance.IsCorrectPoint(this))
+        {
+            anim.SetTrigger("GoodPress");
+            GameManager.Instance.pointsInRound.Remove(this);
+        }
+        else
+        {
+            anim.SetTrigger("BadPress");
+        }
     }
 	
 }

@@ -1,4 +1,4 @@
 ﻿public enum GameState
 {
-    Paused, Playing, GeneratingRound
+    Paused, Playing
 }
