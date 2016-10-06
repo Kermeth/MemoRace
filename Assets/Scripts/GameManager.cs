@@ -66,4 +66,16 @@ public class GameManager : Singleton<GameManager>{
         }
     }
 
+    public bool CheckGameOver()
+    {
+        if (pointsInRound.Count > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }

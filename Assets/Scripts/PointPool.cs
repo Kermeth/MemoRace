@@ -18,18 +18,6 @@ public class PointPool : MonoBehaviour {
         }
     }
 
-    //For Test
-    void Start()
-    {
-        StartCoroutine(GeneratePointAfterScreenRefresh());
-    }
-    //For Test
-    private IEnumerator GeneratePointAfterScreenRefresh()
-    {
-        yield return new WaitForEndOfFrame();
-        GenerateRound();
-    }
-
     public void GenerateRound()
     {
         GameManager.Instance.round++;

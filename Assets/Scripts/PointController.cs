@@ -4,7 +4,8 @@ using System;
 using System.Collections;
 
 [RequireComponent(typeof(Animator))]
-public class PointController : MonoBehaviour {
+public class PointController : MonoBehaviour
+{
 
     private Animator anim
     {
@@ -18,6 +19,35 @@ public class PointController : MonoBehaviour {
         get
         {
             return this.GetComponentInChildren<Text>();
+        }
+    }
+    private Button button
+    {
+        get
+        {
+            return this.GetComponent<Button>();
+        }
+    }
+
+    public void OnEnable()
+    {
+        GameManager.Instance.OnRoundStateChanged += ChangeStateHandler;
+    }
+
+    public void OnDisable()
+    {
+        GameManager.Instance.OnRoundStateChanged -= ChangeStateHandler;
+    }
+
+    private void ChangeStateHandler(RoundState newState)
+    {
+        if (newState == RoundState.Generating)
+        {
+            button.interactable = false;
+        }
+        else
+        {
+            button.interactable = true;
         }
     }
 
@@ -46,12 +76,14 @@ public class PointController : MonoBehaviour {
         if (GameManager.Instance.IsCorrectPoint(this))
         {
             anim.SetTrigger("GoodPress");
-            GameManager.Instance.pointsInRound.Remove(this);
+            GameManager.Instance.pointsInRound.RemoveAt(0);
         }
         else
         {
             anim.SetTrigger("BadPress");
+            GameManager.Instance.ChangeGameState(GameState.GameOver);
+            GameManager.Instance.ChangeRoundState(RoundState.Generating);
         }
     }
-	
+
 }
