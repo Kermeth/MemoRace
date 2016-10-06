@@ -25,20 +25,25 @@ public class TimerController : MonoBehaviour
 
     public void OnEnable()
     {
-        GameManager.Instance.OnStateChanged += ChangeStateHandler;
+        GameManager.Instance.OnRoundStateChanged += ChangeRoundStateHandler;
     }
 
     public void OnDisable()
     {
-        GameManager.Instance.OnStateChanged -= ChangeStateHandler;
+        GameManager.Instance.OnRoundStateChanged -= ChangeRoundStateHandler;
     }
 
-    private void ChangeStateHandler(GameState newState)
+    private void ChangeRoundStateHandler(RoundState newState)
     {
-        if (newState == GameState.GameOver)
+        if (newState == RoundState.Generating)
         {
-            scrollBar.value = 0;
+
         }
+    }
+
+    public void SetTime(float newTime)
+    {
+        scrollBar.value = newTime;
     }
 
 

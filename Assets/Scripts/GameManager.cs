@@ -78,4 +78,19 @@ public class GameManager : Singleton<GameManager>{
         }
     }
 
+    private TimerController _timer;
+    public TimerController GetTimer()
+    {
+        if (_timer == null)
+        {
+            _timer = FindObjectOfType<TimerController>();
+        }
+        return _timer;
+    }
+
+    public void FinishRound()
+    {
+        GetTimer().SetTime(0);
+    }
+
 }

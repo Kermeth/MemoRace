@@ -77,6 +77,10 @@ public class PointController : MonoBehaviour
         {
             anim.SetTrigger("GoodPress");
             GameManager.Instance.pointsInRound.RemoveAt(0);
+            if (GameManager.Instance.pointsInRound.Count <= 0)
+            {
+                GameManager.Instance.FinishRound();
+            }
         }
         else
         {

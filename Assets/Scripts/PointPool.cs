@@ -29,12 +29,13 @@ public class PointPool : MonoBehaviour {
         {
             GameManager.Instance.pointsInRound.Clear();
         }
-        for(int i = 1; i <= GameManager.Instance.round; i++)
+        for(int i = GameManager.Instance.round; i > 0; i--)
         {
             PointController point = GeneratePoint();
             point.SetNumber(i);
             GameManager.Instance.pointsInRound.Add(point);
         }
+        GameManager.Instance.pointsInRound.Reverse();
         GameManager.Instance.ChangeRoundState(RoundState.Generating);
     }
 
