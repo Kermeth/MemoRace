@@ -31,6 +31,7 @@ public class Utils : MonoBehaviour {
     public void ReplayGame()
     {
         GameManager.Instance.round = 0;
+        GameManager.Instance.ClearGameTabletop();
     }
 
 }

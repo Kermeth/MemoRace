@@ -63,6 +63,7 @@ public class PointController : MonoBehaviour
     public void Apear()
     {
         anim.SetBool("apear", true);
+        button.interactable = false;
     }
 
     public void Disapear()
@@ -72,6 +73,7 @@ public class PointController : MonoBehaviour
 
     public void GetPressed()
     {
+        button.interactable = false;
         //Check if good or bad press
         if (GameManager.Instance.IsCorrectPoint(this))
         {

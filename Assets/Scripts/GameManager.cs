@@ -93,4 +93,13 @@ public class GameManager : Singleton<GameManager>{
         GetTimer().SetTime(0);
     }
 
+    public void ClearGameTabletop()
+    {
+        if(pointsInRound!=null)pointsInRound.Clear();
+        foreach(PointController point in FindObjectsOfType<PointController>())
+        {
+            Destroy(point.gameObject);
+        }
+    }
+
 }
