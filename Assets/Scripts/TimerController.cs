@@ -60,7 +60,7 @@ public class TimerController : MonoBehaviour
             }
             else
             {
-                scrollBar.value -= Time.deltaTime * 0.1f;
+                scrollBar.value -= Time.deltaTime * (0.5f/GameManager.Instance.round);
             }
 
         }
