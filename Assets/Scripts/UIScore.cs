@@ -28,7 +28,10 @@ public class UIScore : MonoBehaviour
     {
         if (newState == GameState.GameOver)
         {
-            scoreText.text = "Score:\n" + GameManager.Instance.round;
+            int score = GameManager.Instance.round;
+            GameManager.Instance.SaveScore(score);
+            scoreText.text = "Score:\n" + score+ "\n Highscore:\n" + GameManager.Instance.GetHighscore();
+            
         }
     }
 }

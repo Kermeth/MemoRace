@@ -44,6 +44,37 @@ public class GameManager : Singleton<GameManager>{
     }
     #endregion GameState
 
+    #region Score
+    public void SaveScore(int score)
+    {
+        if (PlayerPrefs.HasKey("highscore"))
+        {
+            int highScore = PlayerPrefs.GetInt("highscore");
+            if (score > highScore)
+            {
+                PlayerPrefs.SetInt("highscore", score);
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetInt("highscore", score);
+        }
+        PlayerPrefs.Save();
+    }
+    public int GetHighscore()
+    {
+        if (PlayerPrefs.HasKey("highscore"))
+        {
+            return PlayerPrefs.GetInt("highscore");
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    #endregion Score
+
+    #region GameManagement
     private PointPool _pool;
     public PointPool GetPool()
     {
@@ -65,7 +96,6 @@ public class GameManager : Singleton<GameManager>{
             return false;
         }
     }
-
     public bool CheckGameOver()
     {
         if (pointsInRound.Count > 0)
@@ -77,7 +107,6 @@ public class GameManager : Singleton<GameManager>{
             return false;
         }
     }
-
     private TimerController _timer;
     public TimerController GetTimer()
     {
@@ -87,12 +116,10 @@ public class GameManager : Singleton<GameManager>{
         }
         return _timer;
     }
-
     public void FinishRound()
     {
         GetTimer().SetTime(0);
     }
-
     public void ClearGameTabletop()
     {
         if(pointsInRound!=null)pointsInRound.Clear();
@@ -101,5 +128,18 @@ public class GameManager : Singleton<GameManager>{
             Destroy(point.gameObject);
         }
     }
+    #endregion GameManagement
+
+    #region Facebook
+    private FacebookManager _facebookManager;
+    public FacebookManager GetFacebookManager()
+    {
+        if (_facebookManager == null)
+        {
+            _facebookManager = FindObjectOfType<FacebookManager>();
+        }
+        return _facebookManager;
+    }
+    #endregion Facebook
 
 }

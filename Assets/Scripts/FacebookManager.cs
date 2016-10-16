@@ -1,10 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections;
-using Facebook.Unity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Facebook.Unity;
+using Facebook.MiniJSON;
 
 public class FacebookManager : MonoBehaviour {
+
+    private string userName;
+    public string GetUserName()
+    {
+        return userName;
+    }
 
 	// Use this for initialization
 	void Awake () {
@@ -45,6 +52,13 @@ public class FacebookManager : MonoBehaviour {
         }
     }
 
+    private void GraphHandler(IGraphResult result)
+    {
+        Debug.Log(result.ToString());
+        Dictionary<string,object> dict = Json.Deserialize(result.RawResult) as Dictionary<string, object>;
+        userName = dict["name"].ToString();
+    }
+
     #region FacebookLogin
     List<string> perms = new List<string>() { "public_profile", "email", "user_friends" };
 
@@ -60,15 +74,7 @@ public class FacebookManager : MonoBehaviour {
     {
         if (FB.IsLoggedIn)
         {
-            // AccessToken class will have session details
-            var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
-            // Print current access token's User ID
-            Debug.Log(aToken.UserId);
-            // Print current access token's granted permissions
-            foreach (string perm in aToken.Permissions)
-            {
-                Debug.Log(perm);
-            }
+            FB.API("/me", HttpMethod.GET, GraphHandler);
         }
         else {
             Debug.Log("User cancelled login");
@@ -78,5 +84,43 @@ public class FacebookManager : MonoBehaviour {
 
 
     #endregion FacebookLogin
+
+    #region FacebookShare
+    public void PublishScore()
+    {
+        if (FB.IsLoggedIn)
+        {
+            FB.LogInWithPublishPermissions(new List<string>() { "publish_actions" }, PublishLoginCallback);
+        }
+    }
+
+    private void PublishLoginCallback(ILoginResult result)
+    {
+        foreach (string s in AccessToken.CurrentAccessToken.Permissions)
+        {
+            Debug.Log(s);
+        }
+        var scoreData = new Dictionary<string, string>() { { "score", GameManager.Instance.GetHighscore().ToString() } };
+        FB.API("/me/scores", HttpMethod.POST, PostScoreCallback, scoreData);
+    }
+
+    private void PostScoreCallback(IGraphResult result)
+    {
+        //TODO SHOW CONFIRMATION
+        Debug.Log(result.RawResult);
+    }
+    #endregion FacebookShare
+
+    #region FacebookFriendList
+    
+    public void RequestUserFriends(FacebookDelegate<IGraphResult> function)
+    {
+        if (FB.IsLoggedIn)
+        {
+            FB.API(FB.AppId+"/scores", HttpMethod.GET, function);
+        }
+    }
+
+    #endregion FacebookFriendList
 
 }
